@@ -1,0 +1,67 @@
+# I am shooting for Exceeds Expectations grade, please reject if this project is only Meets Expectations
+
+import random
+import statistics
+
+attempt_number = []
+highscore = 0
+
+# made run_game a function to improve readability  
+def run_game():
+    answer = 0
+    guess = 0
+    attempts = 0
+    if answer == 0:
+        print("Hello, welcome to the guessing game! Please guess a number between 1-100!")
+    else:
+        print("Welcome to another exciting round of the guessing game! Please guess a number between 1-100!")
+    answer = random.randint(1, 100)
+    while answer != guess:
+        attempts += 1
+        guess = input("What is your guess?  ")
+        try:
+            guess = int(guess)
+        except ValueError:
+            print(
+                "Oh no, we ran into an issue."
+                "You must enter a number between 1-100 to continute with the game."
+                "This counts against your guess total!"
+            )
+            continue
+        try:
+            guess = int(guess)
+            if guess < 1 or guess > 100:
+                raise ValueError("The number entered must be between 1-100. This counts against your guess total!")
+        except ValueError as err:
+            print(F"Oh no we ran into an issue. {err}")
+            continue
+        if guess > answer:
+            print("Your current guess is higher than the answer!")
+        if guess < answer:
+            print("Your current guess is lower than the answer!")
+    print(F"Congratulations! The correct number was {answer} and you guessed it in {attempts} tries!")
+    return attempts
+        
+
+def start_game():
+    while True: 
+        guesses = run_game()
+        if len(attempt_number) == 0:
+            highscore = guesses
+        if guesses < highscore:
+            highscore = guesses
+            print("WOW!! You beat the high score!!!")
+        attempt_number.append(guesses)
+        print(F"* The average guesses to get the correct answer is: {statistics.mean(attempt_number):.2f}.")
+        print(F"* The median guesses to get the correct answer is: {statistics.median(attempt_number)}")
+        print(F"* The mode of the guesses for all games so far is: {statistics.mode(attempt_number)}")
+        print(F"!! The current highscore is {highscore} guesses !!")
+        play = input("Would you like to play again?(Y/N, anything besides Y, for yes, will be considered N, for no.)  ")
+        
+        if play.lower() == "y":   
+            continue
+        else:
+            print("Thank you so much for playing the number guessing game! Goodbye for now!")
+            break
+# Kick off the program by calling the start_game function.
+start_game()
